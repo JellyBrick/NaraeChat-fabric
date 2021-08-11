@@ -6,9 +6,9 @@
 * [홈페이지](https://github.com/sokcuri/NaraeChat)
 * [다운로드](https://github.com/sokcuri/NaraeChat/releases)
 * [업데이트 기록](CHANGELOG.md)
-* 버전: 1.16.1-0.7.1 (2020-07-19)
-  * 마인크래프트 : 1.16.1
-  * 포지 : 1.16.1-32.0.47
+* 버전: 1.17.1-0.8.0 (2021-08-12)
+  * 마인크래프트 : 1.17.1
+  * Fabric : 0.11.6
 * [라이센스 : LGPL 3.0](LICENSE.txt)
 * [버그 리포트 또는 개선 요청 올리기](https://github.com/sokcuri/NaraeChat/issues/new)
 

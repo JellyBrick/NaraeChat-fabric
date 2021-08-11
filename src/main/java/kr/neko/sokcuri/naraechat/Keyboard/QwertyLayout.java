@@ -1,17 +1,18 @@
 package kr.neko.sokcuri.naraechat.Keyboard;
 
+import kr.neko.sokcuri.naraechat.ForgeCompat.PreKeyboardCharTypedEvent;
+import kr.neko.sokcuri.naraechat.ForgeCompat.PreKeyboardKeyPressedEvent;
+import kr.neko.sokcuri.naraechat.ForgeCompat.RenderTickEvent;
 import kr.neko.sokcuri.naraechat.IMEIndicator;
 import kr.neko.sokcuri.naraechat.NaraeUtils;
 import kr.neko.sokcuri.naraechat.Wrapper.TextComponentWrapper;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.event.TickEvent;
 
 import java.awt.*;
 
 public class QwertyLayout implements KeyboardLayout {
     private final String layout = "`1234567890-=~!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zxcvbnm,./ZXCVBNM<>?";
 
-    private static KeyboardLayout instance = new QwertyLayout();
+    private static final KeyboardLayout instance = new QwertyLayout();
     public static KeyboardLayout getInstance() {
         return instance;
     }
@@ -37,13 +38,15 @@ public class QwertyLayout implements KeyboardLayout {
     }
 
     @Override
-    public void onCharTyped(GuiScreenEvent.KeyboardCharTypedEvent.Pre event) { }
+    public void onCharTyped(PreKeyboardCharTypedEvent event) {
+    }
 
     @Override
-    public void onKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event) { }
+    public void onKeyPressed(PreKeyboardKeyPressedEvent event) {
+    }
 
     @Override
-    public void renderTick(TickEvent.RenderTickEvent event) {
+    public void renderTick(RenderTickEvent event) {
         TextComponentWrapper comp = NaraeUtils.getTextComponent();
         if (comp == null) return;
 

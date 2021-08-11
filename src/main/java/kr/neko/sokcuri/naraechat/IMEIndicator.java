@@ -1,16 +1,16 @@
 package kr.neko.sokcuri.naraechat;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import kr.neko.sokcuri.naraechat.Keyboard.KeyboardLayout;
 import kr.neko.sokcuri.naraechat.Wrapper.TextComponentWrapper;
 import kr.neko.sokcuri.naraechat.Wrapper.TextFieldWidgetWrapper;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.MatrixStack;
 
 import java.awt.*;
 
@@ -39,12 +39,11 @@ public class IMEIndicator {
     public void drawIMEIndicator(KeyboardLayout layout) {
         TextComponentWrapper comp = NaraeUtils.getTextComponent();
 
-        if (!(comp instanceof TextFieldWidgetWrapper)) {
+        if (!(comp instanceof TextFieldWidgetWrapper wrapper)) {
             return;
         }
 
-        TextFieldWidgetWrapper wrapper = (TextFieldWidgetWrapper)comp;
-        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+        TextRenderer fontRenderer = MinecraftClient.getInstance().textRenderer;
 
         boolean enableBackgroundDrawing = wrapper.getEnableBackgroundDrawing();
         boolean isEnabled = wrapper.isEnabled();
@@ -69,11 +68,11 @@ public class IMEIndicator {
         String indicatorStr = indicatorFirst + indicatorLast;
 
         int indicatorMargin = 1;
-        int indicatorFirstWidth = fontRenderer.getStringWidth(indicatorFirst);
-        int indicatorWidth = fontRenderer.getStringWidth(indicatorStr);
-        int indicatorHeight = fontRenderer.getWordWrappedHeight(indicatorStr, 100);
+        int indicatorFirstWidth = fontRenderer.getWidth(indicatorFirst);
+        int indicatorWidth = fontRenderer.getWidth(indicatorStr);
+        int indicatorHeight = fontRenderer.getWrappedLinesHeight(indicatorStr, 100);
 
-        int strWidth = fontRenderer.getStringWidth(text);
+        int strWidth = fontRenderer.getWidth(text);
         if (strWidth + indicatorWidth > width) {
             indicatorX = x + width - indicatorWidth;
         } else {
@@ -97,13 +96,13 @@ public class IMEIndicator {
         if (glfwGetTime() - animationTickTime > 1.0f) {
             savedIndicatorX = indicatorX;
         } else {
-            currentIndicatorX = savedIndicatorX + (indicatorX - savedIndicatorX) * EasingFunctions.easeOutQuint((float)glfwGetTime() - animationTickTime);
+            currentIndicatorX = savedIndicatorX + (indicatorX - savedIndicatorX) * EasingFunctions.easeOutQuint((float) glfwGetTime() - animationTickTime);
             indicatorX = currentIndicatorX;
         }
 
         drawIndicatorBox(indicatorX - indicatorMargin, y - height - indicatorMargin, indicatorX + indicatorWidth + indicatorMargin, y - height + indicatorHeight + indicatorMargin);
-        fontRenderer.drawString(new MatrixStack(), indicatorFirst, indicatorX, y - height, layout.getIndicatorColor().getRGB());
-        fontRenderer.drawString(new MatrixStack(), indicatorLast, indicatorX + indicatorFirstWidth, y - height, new Color(0xFF, 0xFF, 0xFF).getRGB());
+        fontRenderer.draw(new MatrixStack(), indicatorFirst, indicatorX, y - height, layout.getIndicatorColor().getRGB());
+        fontRenderer.draw(new MatrixStack(), indicatorLast, indicatorX + indicatorFirstWidth, y - height, new Color(0xFF, 0xFF, 0xFF).getRGB());
     }
 
     void drawIndicatorBox(float x, float y, float cx, float cy) {
@@ -121,21 +120,18 @@ public class IMEIndicator {
 
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
-        GlStateManager.enableBlend();
-        GlStateManager.enableAlphaTest();
-        GlStateManager.polygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        GlStateManager.color4f(0.0f, 0.0f, 0.0f, 0.7f);
-        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1f);
-        GlStateManager.disableTexture();
-        bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        bufferbuilder.pos(x, cy, 0.0D).endVertex();
-        bufferbuilder.pos(cx, cy, 0.0D).endVertex();
-        bufferbuilder.pos(cx, y, 0.0D).endVertex();
-        bufferbuilder.pos(x, y, 0.0D).endVertex();
+        GlStateManager._enableBlend();
+        GlStateManager._polygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        GlStateManager._clearColor(0.0f, 0.0f, 0.0f, 0.7f);
+        GlStateManager._disableTexture();
+        bufferbuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
+        bufferbuilder.vertex(x, cy, 0.0D).next();
+        bufferbuilder.vertex(cx, cy, 0.0D).next();
+        bufferbuilder.vertex(cx, y, 0.0D).next();
+        bufferbuilder.vertex(x, y, 0.0D).next();
         tessellator.draw();
-        GlStateManager.enableTexture();
-        GlStateManager.disableAlphaTest();
-        GlStateManager.disableBlend();
+        GlStateManager._enableTexture();
+        GlStateManager._disableBlend();
     }
 
 }

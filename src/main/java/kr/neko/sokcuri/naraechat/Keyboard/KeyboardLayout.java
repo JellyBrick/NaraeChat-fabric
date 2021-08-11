@@ -1,19 +1,26 @@
 package kr.neko.sokcuri.naraechat.Keyboard;
 
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.event.TickEvent;
+import kr.neko.sokcuri.naraechat.ForgeCompat.PreKeyboardCharTypedEvent;
+import kr.neko.sokcuri.naraechat.ForgeCompat.PreKeyboardKeyPressedEvent;
+import kr.neko.sokcuri.naraechat.ForgeCompat.RenderTickEvent;
 
 import java.awt.*;
 
 public interface KeyboardLayout {
+
     String getName();
+
     String getIndicatorText();
+
     Color getIndicatorColor();
+
     String getLayoutString();
 
-    void onCharTyped(GuiScreenEvent.KeyboardCharTypedEvent.Pre event);
-    void onKeyPressed(GuiScreenEvent.KeyboardKeyPressedEvent.Pre event);
-    void renderTick(TickEvent.RenderTickEvent event);
+    void onCharTyped(PreKeyboardCharTypedEvent event);
+
+    void onKeyPressed(PreKeyboardKeyPressedEvent event);
+
+    void renderTick(RenderTickEvent event);
 
     void cleanUp();
 }

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "naraechat",
+  "version": "1.17.1-0.8.0",
+  "name": "Narae Chat",
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  },
+  "description": "나래챗은 마인크래프트 한글 입력을 도와줍니다. by 소쿠릿",
+  "contact": {
+    "issues": "https://github.com/sokcuri/naraechat/issues",
+    "homepage": "https://github.com/sokcuri/naraechat"
+  },
+  "authors": [
+    "sokcuri"
+  ],
+  "entrypoints": {
+    "main": [
+      "kr.neko.sokcuri.naraechat.NaraeChat"
+    ]
+  },
+  "mixins": [
+    "naraechat.mixins.json"
+  ]
+}

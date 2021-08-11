@@ -1,9 +1,7 @@
 package kr.neko.sokcuri.naraechat.Obfuscated;
 
 public class ReflectionFieldInfo<O, T> {
-    static public <O, T> ReflectionFieldInfo create(String name, Class<T> type, Class<O> owner, int depth) {
-        return new ReflectionFieldInfo(name, type, owner, depth);
-    }
+    private final String name;
 
     ReflectionFieldInfo(String name, Class<T> type, Class<O> owner, int depth) {
         this.name = name;
@@ -12,10 +10,13 @@ public class ReflectionFieldInfo<O, T> {
         this.depth = depth;
     }
 
-    private String name;
-    private Class<T> type;
-    private Class<O> owner;
-    private int depth;
+    private final Class<T> type;
+    private final Class<O> owner;
+    private final int depth;
+
+    static public <O, T> ReflectionFieldInfo<O, T> create(String name, Class<T> type, Class<O> owner, int depth) {
+        return new ReflectionFieldInfo<>(name, type, owner, depth);
+    }
 
     public String getName() {
         return this.name;

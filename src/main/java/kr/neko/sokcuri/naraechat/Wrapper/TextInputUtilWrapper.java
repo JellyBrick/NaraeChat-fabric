@@ -1,27 +1,17 @@
 package kr.neko.sokcuri.naraechat.Wrapper;
 
 import kr.neko.sokcuri.naraechat.Obfuscated.ObfuscatedField;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.fonts.TextInputUtil;
+import net.minecraft.client.util.SelectionManager;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class TextInputUtilWrapper implements TextComponentWrapper {
-    private final TextInputUtil base;
+    private final SelectionManager base;
 
-    public TextInputUtilWrapper(TextInputUtil inputUtil) {
+    public TextInputUtilWrapper(SelectionManager inputUtil) {
         this.base = inputUtil;
-    }
-
-    public Minecraft getMinecraftInstance() {
-        return Minecraft.getInstance();
-    }
-
-    public FontRenderer getFontRenderer() {
-        return Minecraft.getInstance().fontRenderer;
     }
 
     public Supplier<String> getSupplier() {
@@ -115,7 +105,7 @@ public class TextInputUtilWrapper implements TextComponentWrapper {
     @Override
     public void modifyText(char ch) {
         int cursorPosition = getCursorPosition();
-        char arr[] = getText().toCharArray();
+        char[] arr = getText().toCharArray();
         if (cursorPosition > 0 && cursorPosition <= arr.length) {
             arr[cursorPosition - 1] = ch;
             setText(String.valueOf(arr));

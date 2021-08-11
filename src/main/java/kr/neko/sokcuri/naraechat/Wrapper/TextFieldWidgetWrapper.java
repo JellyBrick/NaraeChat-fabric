@@ -2,8 +2,8 @@ package kr.neko.sokcuri.naraechat.Wrapper;
 
 import kr.neko.sokcuri.naraechat.Obfuscated.ObfuscatedField;
 import kr.neko.sokcuri.naraechat.Obfuscated.ObfuscatedMethod;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.CreativeScreen;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 
 import java.util.function.Consumer;
@@ -22,11 +22,10 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
     }
 
     private void updateScreen() {
-        Minecraft mc = Minecraft.getInstance();
+        MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.currentScreen == null) return;
 
-        if (mc.currentScreen instanceof CreativeScreen) {
-            CreativeScreen creativeScreen = (CreativeScreen)mc.currentScreen;
+        if (mc.currentScreen instanceof CreativeInventoryScreen creativeScreen) {
             ObfuscatedMethod.$CreativeScreen.updateCreativeSearch.invoke(creativeScreen);
         }
     }
@@ -68,39 +67,20 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
     }
 
     public int getHeight() {
-        return base.getHeightRealms();
+        return base.getHeight();
     }
 
     public int getAdjustedWidth() {
-        return base.getAdjustedWidth();
+        return base.getInnerWidth();
     }
 
     public int getCursorPosition() {
-        return base.getCursorPosition();
+        return base.getCursor();
     }
 
     @Override
     public void setCursorPosition(int pos) {
-        base.setCursorPosition(pos);
-    }
-
-    public int getMaxStringLength() {
-        return ObfuscatedField.$TextFieldWidget.maxStringLength.get(base);
-    }
-
-    public int getNthWordFromCursor(int numWords) {
-        return base.getNthWordFromCursor(numWords);
-    }
-
-    public String getSelectedText() {
-        return base.getSelectedText();
-    }
-
-    public boolean getCanLoseFocus() {
-        return ObfuscatedField.$TextFieldWidget.canLoseFocus.get(base);
-    }
-    public void setCanLoseFocus(boolean b) {
-        base.setCanLoseFocus(b);
+        base.setCursor(pos);
     }
 
     public String getText() {
@@ -115,11 +95,7 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
     }
 
     public void deleteFromCursor(int num) {
-        base.deleteFromCursor(num);
-    }
-
-    public boolean getVisible() {
-        return base.getVisible();
+        base.eraseCharacters(num);
     }
 
     @Override
@@ -129,7 +105,7 @@ public class TextFieldWidgetWrapper implements TextComponentWrapper {
 
     @Override
     public void writeText(String str) {
-        base.writeText(str);
+        base.write(str);
         sendTextChanged(str);
         updateScreen();
     }

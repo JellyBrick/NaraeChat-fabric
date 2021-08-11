@@ -1,7 +1,6 @@
 package kr.neko.sokcuri.naraechat.Obfuscated;
 
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -9,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ReflectionFieldMap<T> {
-    private HashMap<String, List<ReflectionFieldInfo>> map = new HashMap<>();
-    private Class<T> target;
+    private final HashMap<String, List<ReflectionFieldInfo>> map = new HashMap<>();
+    private final Class<T> target;
 
     public ReflectionFieldMap(Class<T> target) {
         this.target = target;
